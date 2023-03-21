@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <details>
+        <summary>Help</summary>
+        <p>
+            This is the Heirloom Database. Using this software, you may create a digital archive
+            containing photos and descriptions of your important physical objects. Your archive may
+            one day help other people to determine the sentimental, cultural, or monetary value of
+            the items that you document. By recording useful details or anecdotes about the items in
+            your archive, you can preserve information about them that is not apparent by simple
+            examination.
+        </p>
+        <p>
+            Put simply, if you have a house full of old stuff, then your kids might appreciate a
+            list of what's important and why. That way, they won't throw out something important
+            after you're dead.
+        </p>
+        <p>
+            To get started with the Heirloom Database, create a new Heirloom by clicking on the
+            button below. Take a photo of the item with your device's camera, write a description,
+            and click submit. This will add the Heirloom to your database. Repeat this process as
+            many times as you like.
+        </p>
+        <p>
+            When writing the description for an Heirloom, be sure to include all of the details that
+            you think might be relevant. There's no need to be brief. After all, the purpose of this
+            archive is to provide information that other people won't have unless you write it down.
+        </p>
+        <p>
+            If you want to, you can edit a description for an Heirloom, retake a photo, or delete an
+            Heirloom completely using the buttons on each Heirloom entry. You can also run a simple
+            text search over your archive, which might be useful if you're not sure whether or not
+            you've documented something already.
+        </p>
+    </details>
+    <ul>
+        {% for heirloom in heirlooms %}
+        <li>
+            <a href="/view_heirloom?id={{ heirloom }}">{{ heirloom }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <form name="search" action="/search" method="get">
+        <input id="query" name="query" type="text" placeholder="Search Heirlooms" />
+        <input type="submit" />
+    </form>
+    <a href="/create_heirloom">Create Heirloom</a>
+</body>
+
+</html>

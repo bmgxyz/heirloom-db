@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <img src="/{{ id }}" />
+    <form name="edit_heirloom" action="/edit_heirloom" enctype="multipart/form-data" method="post">
+        <input id="image" name="image" type="file" capture="environment" />
+        <textarea id="description" name="description" required>{{ description }}</textarea>
+        <input id="id" name="id" type="hidden" value="{{ id }}" />
+        <input type="submit" />
+    </form>
+    <a href="/">Cancel</a>
+</body>
+
+</html>
