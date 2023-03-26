@@ -1,15 +1,30 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+    {% include "style.html" %}
+</head>
+
 <body>
-    <img src="/{{ id }}" />
-    <div>{{ description }}</div>
-    <p>Are you certain that you want to delete this Heirloom?</p>
-    <a href="/view_heirloom?id={{ id }}">Cancel</a>
-    <form name="edit_heirloom" action="/delete_heirloom" method="post">
-        <input id="id" name="id" type="hidden" value="{{ id }}" />
-        <input type="submit" />
-    </form>
+    <div class="main">
+        <details>
+            <summary>Help</summary>
+            <p>
+                You may use this page to permanently remove an Heirloom from your database. Use the
+                buttons below to either confirm that you want to delete this Heirloom or cancel and
+                return to the Heirloom's page.
+            </p>
+        </details>
+        <img src="/{{ id }}" class="imgPrimary" />
+        <div class="text shrinkwrap">Are you certain that you want to delete this Heirloom?</div>
+        <form name="edit_heirloom" action="/delete_heirloom" method="post">
+            <input id="id" name="id" type="hidden" value="{{ id }}" />
+            <div>
+                <a href="/view_heirloom?id={{ id }}" class="buttonLink">No, cancel</a>
+                <input type="submit" value="Yes, delete" class="alert" />
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>

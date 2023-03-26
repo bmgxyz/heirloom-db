@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+    {% include "style.html" %}
+</head>
+
 <body>
-    <img src="/{{ id }}" />
-    <div>{{ description }}</div>
-    <a href="/edit_heirloom?id={{ id }}">Edit</a>
-    <a href="/delete_heirloom?id={{ id }}">Delete</a>
+    <div class="main">
+        <details>
+            <summary>Help</summary>
+            <p>
+                This is the page for a particular Heirloom in your database. You may edit or delete
+                it by tapping the corresponding buttons below.
+            </p>
+        </details>
+        <div>
+            <a href="/" class="buttonLink">Home</a>
+            <a href="/edit_heirloom?id={{ id }}" class="buttonLink">Edit</a>
+            <a href="/delete_heirloom?id={{ id }}" class="buttonLink">Delete</a>
+        </div>
+        <img src="/{{ id }}" class="imgPrimary" />
+        <div class="text description">{{ description }}</div>
+    </div>
 </body>
 
 </html>

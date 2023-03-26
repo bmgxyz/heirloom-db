@@ -22,8 +22,6 @@ async def index(request):
     heirlooms = os.listdir(HEIRLOOMS_DIR)
     heirlooms = list(filter(lambda h: os.path.isdir(
         os.path.join(HEIRLOOMS_DIR, h)), heirlooms))
-    heirlooms.sort()
-    print(heirlooms)
     context = {"heirlooms": heirlooms}
     response = aiohttp_jinja2.render_template(
         "index.html", request, context=context)
@@ -41,11 +39,10 @@ async def create_heirloom(request):
         if "description" not in post_data.keys() or "image" not in post_data.keys():
             return web.HTTPBadRequest()
         description_data = post_data["description"]
-        print(post_data["image"])
         image_data = post_data["image"].file.read()
         new_heirloom_id = None
         while new_heirloom_id is None or os.path.isdir(os.path.join(new_heirloom_path)):
-            new_heirloom_id = str(random.randint(1e10, 1e11))
+            new_heirloom_id = str(random.randint(1e9, 1e10))
             new_heirloom_path = os.path.join(HEIRLOOMS_DIR, new_heirloom_id)
         os.makedirs(new_heirloom_path)
         description_path = os.path.join(new_heirloom_path, "description")
@@ -129,11 +126,6 @@ async def delete_heirloom(request):
         return web.HTTPFound("/")
 
 
-async def search_heirlooms(request):
-    # TODO: implement
-    pass
-
-
 async def image_handler(request):
     heirloom_id = request.match_info["image"]
     image_path = os.path.join(HEIRLOOMS_DIR, heirloom_id, "image")
@@ -146,7 +138,7 @@ with open(os.path.join(SCRIPT_DIR, "auth.txt"), "r") as auth_file:
     username = auth_file.readline().rstrip()
     password = auth_file.readline().rstrip()
 auth = BasicAuthMiddleware(username=username, password=password)
-app = web.Application(middlewares=[auth])
+app = web.Application(middlewares=[auth], client_max_size=16777216)
 app.add_routes([web.get("/create_heirloom", create_heirloom, allow_head=False),
                 web.post("/create_heirloom", create_heirloom),
                 web.get("/view_heirloom", view_heirloom, allow_head=False),
@@ -154,7 +146,6 @@ app.add_routes([web.get("/create_heirloom", create_heirloom, allow_head=False),
                 web.post("/edit_heirloom", edit_heirloom),
                 web.get("/delete_heirloom", delete_heirloom, allow_head=False),
                 web.post("/delete_heirloom", delete_heirloom),
-                web.get("/search", search_heirlooms),
                 web.get("/{image}", image_handler, allow_head=False),
                 web.get("/", index)])
 aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader(

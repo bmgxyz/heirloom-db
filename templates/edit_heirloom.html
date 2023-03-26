@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+    {% include "style.html" %}
+    {% include "imagePreview.html" %}
+</head>
+
 <body>
-    <img src="/{{ id }}" />
-    <form name="edit_heirloom" action="/edit_heirloom" enctype="multipart/form-data" method="post">
-        <input id="image" name="image" type="file" capture="environment" />
-        <textarea id="description" name="description" required>{{ description }}</textarea>
-        <input id="id" name="id" type="hidden" value="{{ id }}" />
-        <input type="submit" />
-    </form>
-    <a href="/">Cancel</a>
+    <div class="main">
+        <details>
+            <summary>Help</summary>
+            <p>
+                You may use this page to change the contents of this Heirloom entry. You may retake
+                this Heirloom's photo by tapping the button below and using your device's camera to
+                capture a new image. You may also edit the description of the Heirloom by changing
+                the text in the description box. To confirm your changes, tap Save. To discard your
+                changes and revert back to the original version of your Heirloom, tap Cancel.
+            </p>
+        </details>
+        <img src="/{{ id }}" class="imgPrimary" />
+        <form name="edit_heirloom" action="/edit_heirloom" enctype="multipart/form-data" method="post">
+            <div>
+                <label for="image" class="fileLink">Retake photo</label>
+                <input id="image" name="image" type="file" capture="environment" onchange="previewFile()" />
+            </div>
+            <textarea id="description" name="description" autofocus required>{{ description }}</textarea>
+            <input id="id" name="id" type="hidden" value="{{ id }}" />
+            <div>
+                <a href="/view_heirloom?id={{ id }}" class="buttonLink">Cancel</a>
+                <input type="submit" value="Save" />
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>

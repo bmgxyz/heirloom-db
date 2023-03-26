@@ -1,0 +1,139 @@
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+    :root {
+        --color-light: #dcedff;
+        --color-medium-1: #94b0da;
+        --color-medium-2: #8f91a2;
+        --color-dark-1: #505a5b;
+        --color-dark-2: #343f3e;
+        --color-alert: #f2631c;
+
+        background-color: var(--color-medium-1);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: larger;
+        color: var(--color-dark-2)
+    }
+
+    .heirloomGrid {
+        display: grid;
+        gap: 10px;
+        /* columns should be equally-sized and not less than 360 px wide */
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        align-items: center;
+        justify-items: center;
+    }
+
+    .heirloom {
+        color: black;
+    }
+
+    img {
+        width: 100%;
+        border-radius: 5px;
+        box-shadow: 2px 2px 4px;
+    }
+
+    .imgPrimary {
+        display: block;
+        max-height: 60vh;
+        max-width: 90vw;
+        width: auto;
+        height: auto;
+    }
+
+    details {
+        background-color: var(--color-light);
+        border-radius: 5px;
+        box-shadow: 2px 2px 4px;
+        padding: 10px;
+        align-self: flex-start;
+    }
+
+    .buttonLink,
+    .fileLink {
+        font-size: x-large;
+        color: var(--color-dark-2);
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        max-width: 50vw;
+        padding: 5px 10px;
+        background-color: var(--color-light);
+        border: solid var(--color-dark-2) 2px;
+        border-radius: 5px;
+        box-shadow: 2px 2px 4px;
+        cursor: pointer;
+    }
+
+    .main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+        width: 90vw;
+    }
+
+    textarea {
+        width: calc(min(70ch, 100%));
+        min-height: 20vh;
+        font-family: inherit;
+        font-size: large;
+        resize: none;
+        background-color: var(--color-light);
+        border-radius: 5px;
+        box-shadow: 2px 2px 4px;
+        padding: 15px;
+    }
+
+    textarea:focus {
+        outline: var(--color-dark-2) solid 3px;
+        box-shadow: 4px 4px 8px;
+    }
+
+    .text {
+        border-radius: 5px;
+        box-shadow: 2px 2px 4px;
+        background-color: var(--color-light);
+        padding: 10px;
+    }
+
+    .text.description {
+        white-space: pre-wrap;
+        width: calc(min(70ch, 90vw));
+    }
+
+    .text.shrinkwrap {
+        width: unset;
+        white-space: unset;
+    }
+
+    input[type="file"] {
+        position: absolute;
+        left: -999em;
+    }
+
+    input[type="submit"].alert {
+        background-color: var(--color-alert);
+    }
+
+    input[type="submit"] {
+        font-size: x-large;
+        font-weight: bold;
+        color: var(--color-dark-2);
+        text-align: center;
+        text-decoration: none;
+        padding: 5px 10px;
+        background-color: var(--color-light);
+        border: solid var(--color-dark-2) 2px;
+        border-radius: 5px;
+        box-shadow: 2px 2px 4px;
+        cursor: pointer;
+    }
+</style>

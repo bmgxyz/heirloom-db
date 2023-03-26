@@ -1,13 +1,35 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+    {% include "style.html" %}
+    {% include "imagePreview.html" %}
+</head>
+
 <body>
-    <form name="create_heirloom" action="/create_heirloom" enctype="multipart/form-data" method="post">
-        <input id="image" name="image" type="file" capture="environment" required />
-        <textarea id="description" name="description" required></textarea>
-        <input type="submit" />
-    </form>
-    <a href="/">Cancel</a>
+    <div class="main">
+        <details>
+            <summary>Help</summary>
+            <p>
+                You may use this page to add a new Heirloom to your database. Every Heirloom entry
+                contains an image and a written description. Tap the button below to take a photo of
+                your Heirloom, and then fill in the description field. To save your work, tap
+                Create, or tap Cancel to go back.
+            </p>
+        </details>
+        <img src="" class="imgPrimary" />
+        <form name="create_heirloom" action="/create_heirloom" enctype="multipart/form-data" method="post">
+            <div>
+                <label for="image" class="fileLink">Take photo</label>
+                <input id="image" name="image" type="file" capture="environment" onchange="previewFile()" required />
+            </div>
+            <textarea id="description" name="description" autofocus required></textarea>
+            <div>
+                <a href="/" class="buttonLink">Cancel</a>
+                <input type="submit" value="Create" />
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>
