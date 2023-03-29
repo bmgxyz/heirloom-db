@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <title>Heirloom Database</title>
     {% include "style.html" %}
 </head>
 
@@ -39,10 +40,10 @@
             </p>
         </details>
         <div class="heirloomGrid">
-            <a href="/create_heirloom" class="buttonLink">Create Heirloom</a>
+            <a href="{{ urlSlug }}/create_heirloom" class="buttonLink">Create Heirloom</a>
             {% for heirloom_id in heirlooms %}
-            <a class="heirloom" href="/view_heirloom?id={{ heirloom_id }}">
-                <img src="/{{ heirloom_id }}" />
+            <a class="heirloom" href="{{ urlSlug }}/view_heirloom?id={{ heirloom_id }}">
+                <img src="{{ urlSlug }}/{{ heirloom_id }}" />
             </a>
             {% endfor %}
         </div>

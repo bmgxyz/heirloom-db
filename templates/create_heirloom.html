@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <title>Create New Heirloom — Heirloom Database</title>
     {% include "style.html" %}
     {% include "imagePreview.html" %}
 </head>
@@ -18,14 +19,14 @@
             </p>
         </details>
         <img src="" class="imgPrimary" />
-        <form name="create_heirloom" action="/create_heirloom" enctype="multipart/form-data" method="post">
+        <form name="create_heirloom" action="{{ urlSlug }}/create_heirloom" enctype="multipart/form-data" method="post">
             <div>
                 <label for="image" class="fileLink">Take photo</label>
                 <input id="image" name="image" type="file" capture="environment" onchange="previewFile()" required />
             </div>
             <textarea id="description" name="description" autofocus required></textarea>
             <div>
-                <a href="/" class="buttonLink">Cancel</a>
+                <a href="{{ urlSlug }}/" class="buttonLink">Cancel</a>
                 <input type="submit" value="Create" />
             </div>
         </form>

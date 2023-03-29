@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <title>Edit Heirloom — Heirloom Database</title>
     {% include "style.html" %}
     {% include "imagePreview.html" %}
 </head>
@@ -18,8 +19,8 @@
                 changes and revert back to the original version of your Heirloom, tap Cancel.
             </p>
         </details>
-        <img src="/{{ id }}" class="imgPrimary" />
-        <form name="edit_heirloom" action="/edit_heirloom" enctype="multipart/form-data" method="post">
+        <img src="{{ urlSlug }}/{{ id }}" class="imgPrimary" />
+        <form name="edit_heirloom" action="{{ urlSlug }}/edit_heirloom" enctype="multipart/form-data" method="post">
             <div>
                 <label for="image" class="fileLink">Retake photo</label>
                 <input id="image" name="image" type="file" capture="environment" onchange="previewFile()" />
@@ -27,7 +28,7 @@
             <textarea id="description" name="description" autofocus required>{{ description }}</textarea>
             <input id="id" name="id" type="hidden" value="{{ id }}" />
             <div>
-                <a href="/view_heirloom?id={{ id }}" class="buttonLink">Cancel</a>
+                <a href="{{ urlSlug }}/view_heirloom?id={{ id }}" class="buttonLink">Cancel</a>
                 <input type="submit" value="Save" />
             </div>
         </form>

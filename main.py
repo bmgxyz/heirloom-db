@@ -11,6 +11,16 @@ import shutil
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(sys.argv[0]))
 HEIRLOOMS_DIR = os.path.join(SCRIPT_DIR, "heirlooms")
+config = {}
+with open(os.path.join(SCRIPT_DIR, "config.txt"), "r") as config_file:
+    for line in config_file:
+        key, value = line.rstrip().split("=")
+        config[key] = value
+USERNAME = config["username"]
+PASSWORD = config["password"]
+URL_SLUG = config["urlSlug"]
+HOST = config["host"]
+PORT = int(config["port"])
 
 
 def heirloom_exists(heirloom_id: str):
@@ -22,7 +32,7 @@ async def index(request):
     heirlooms = os.listdir(HEIRLOOMS_DIR)
     heirlooms = list(filter(lambda h: os.path.isdir(
         os.path.join(HEIRLOOMS_DIR, h)), heirlooms))
-    context = {"heirlooms": heirlooms}
+    context = {"heirlooms": heirlooms, "urlSlug": URL_SLUG}
     response = aiohttp_jinja2.render_template(
         "index.html", request, context=context)
     return response
@@ -30,7 +40,7 @@ async def index(request):
 
 async def create_heirloom(request):
     if request.method == "GET":
-        context = {}
+        context = {"urlSlug": URL_SLUG}
         response = aiohttp_jinja2.render_template(
             "create_heirloom.html", request, context=context)
         return response
@@ -51,7 +61,7 @@ async def create_heirloom(request):
             description_file.write(description_data)
         with open(image_path, "wb") as image_file:
             image_file.write(image_data)
-        return web.HTTPFound(f"/view_heirloom?id={new_heirloom_id}")
+        return web.HTTPFound(f"{URL_SLUG}/view_heirloom?id={new_heirloom_id}")
 
 
 async def view_heirloom(request):
@@ -62,7 +72,8 @@ async def view_heirloom(request):
         return web.HTTPNotFound()
     description = open(os.path.join(
         HEIRLOOMS_DIR, heirloom_id, "description"), "r").read()
-    context = {"id": heirloom_id, "description": description}
+    context = {"id": heirloom_id,
+               "description": description, "urlSlug": URL_SLUG}
     response = aiohttp_jinja2.render_template(
         "view_heirloom.html", request, context=context)
     return response
@@ -77,7 +88,8 @@ async def edit_heirloom(request):
             return web.HTTPNotFound()
         description = open(os.path.join(
             HEIRLOOMS_DIR, heirloom_id, "description"), "r").read()
-        context = {"id": heirloom_id, "description": description}
+        context = {"id": heirloom_id,
+                   "description": description, "urlSlug": URL_SLUG}
         response = aiohttp_jinja2.render_template(
             "edit_heirloom.html", request, context=context)
         return response
@@ -100,7 +112,7 @@ async def edit_heirloom(request):
             image_path = os.path.join(heirloom_path, "image")
             with open(image_path, "wb") as image_file:
                 image_file.write(image_data)
-        return web.HTTPFound(f"/view_heirloom?id={heirloom_id}")
+        return web.HTTPFound(f"{URL_SLUG}/view_heirloom?id={heirloom_id}")
 
 
 async def delete_heirloom(request):
@@ -110,7 +122,7 @@ async def delete_heirloom(request):
         heirloom_id = request.query["id"]
         if not heirloom_exists(heirloom_id):
             return web.HTTPNotFound()
-        context = {"id": heirloom_id}
+        context = {"id": heirloom_id, "urlSlug": URL_SLUG}
         response = aiohttp_jinja2.render_template(
             "delete_heirloom.html", request, context=context)
         return response
@@ -123,7 +135,7 @@ async def delete_heirloom(request):
             return web.HTTPNotFound()
         heirloom_path = os.path.join(HEIRLOOMS_DIR, heirloom_id)
         shutil.rmtree(heirloom_path)
-        return web.HTTPFound("/")
+        return web.HTTPFound(f"{URL_SLUG}/")
 
 
 async def image_handler(request):
@@ -134,22 +146,24 @@ async def image_handler(request):
     else:
         return web.HTTPNotFound()
 
-with open(os.path.join(SCRIPT_DIR, "auth.txt"), "r") as auth_file:
-    username = auth_file.readline().rstrip()
-    password = auth_file.readline().rstrip()
-auth = BasicAuthMiddleware(username=username, password=password)
+auth = BasicAuthMiddleware(username=USERNAME, password=PASSWORD)
 app = web.Application(middlewares=[auth], client_max_size=16777216)
-app.add_routes([web.get("/create_heirloom", create_heirloom, allow_head=False),
-                web.post("/create_heirloom", create_heirloom),
-                web.get("/view_heirloom", view_heirloom, allow_head=False),
-                web.get("/edit_heirloom", edit_heirloom, allow_head=False),
-                web.post("/edit_heirloom", edit_heirloom),
-                web.get("/delete_heirloom", delete_heirloom, allow_head=False),
-                web.post("/delete_heirloom", delete_heirloom),
-                web.get("/{image}", image_handler, allow_head=False),
-                web.get("/", index)])
+app.add_routes([web.get(URL_SLUG + "/create_heirloom", create_heirloom, allow_head=False),
+                web.post(URL_SLUG + "/create_heirloom", create_heirloom),
+                web.get(URL_SLUG + "/view_heirloom",
+                        view_heirloom, allow_head=False),
+                web.get(URL_SLUG + "/edit_heirloom",
+                        edit_heirloom, allow_head=False),
+                web.post(URL_SLUG + "/edit_heirloom", edit_heirloom),
+                web.get(URL_SLUG + "/delete_heirloom",
+                        delete_heirloom, allow_head=False),
+                web.post(URL_SLUG + "/delete_heirloom", delete_heirloom),
+                web.get(URL_SLUG + "/{image}",
+                        image_handler, allow_head=False),
+                web.get(URL_SLUG + "/", index),
+                web.get(URL_SLUG, index)])
 aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader(
     os.path.join(SCRIPT_DIR, "templates")))
 
 if __name__ == "__main__":
-    web.run_app(app)
+    web.run_app(app, host=HOST, port=PORT)

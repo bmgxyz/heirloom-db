@@ -21,17 +21,21 @@ privacy. The server does not keep any activity records for individual users.
 
 ## Installation
 
+First, run `cp config.example.txt config.txt` and edit `config.txt` to contain your desired
+username, password, and other configuration values. If running directly on the host OS, you should
+probably set the `host` value to `127.0.0.1`. If running under Docker, you should probably set it to
+`0.0.0.0`. (In both cases, you should probably use a reverse proxy.) You can also set the `urlSlug`
+value if running on a route other than `/`, such as `/heirlooms`.
+
+To run directly on the host OS:
+
 1. `pip install -r requirements.txt`
-2. `cp auth.example.txt auth.txt` and edit `auth.txt` to contain your desired username and password
+2. `./main.py`
 
-Then, either run on the host OS with:
+Or, to run under Docker:
 
-3. `./main.py` (the server binds to port 8080)
-
-Or run under Docker with:
-
-3. `docker build -t heirloom-db .`
-4. `docker run --name heirloom-db -v heirlooms:/app/heirlooms -p 8080:8080 heirloom-db:latest`
+1. `docker build -t heirloom-db .`
+2. `docker run --name heirloom-db -v heirlooms:/app/heirlooms -p 8080:8080 heirloom-db:latest`
 
 This server does not provide TLS. I recommend configuring a proper Web server as a reverse proxy in
 front of `heirloom-db` for public-facing deployments.

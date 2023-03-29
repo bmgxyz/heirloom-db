@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <title>Delete Heirloom — Heirloom Database</title>
     {% include "style.html" %}
 </head>
 
@@ -15,12 +16,12 @@
                 return to the Heirloom's page.
             </p>
         </details>
-        <img src="/{{ id }}" class="imgPrimary" />
+        <img src="{{ urlSlug }}/{{ id }}" class="imgPrimary" />
         <div class="text shrinkwrap">Are you certain that you want to delete this Heirloom?</div>
-        <form name="edit_heirloom" action="/delete_heirloom" method="post">
+        <form name="edit_heirloom" action="{{ urlSlug }}/delete_heirloom" method="post">
             <input id="id" name="id" type="hidden" value="{{ id }}" />
             <div>
-                <a href="/view_heirloom?id={{ id }}" class="buttonLink">No, cancel</a>
+                <a href="{{ urlSlug }}/view_heirloom?id={{ id }}" class="buttonLink">No, cancel</a>
                 <input type="submit" value="Yes, delete" class="alert" />
             </div>
         </form>
